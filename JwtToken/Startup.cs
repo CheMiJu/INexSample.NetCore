@@ -31,18 +31,16 @@ namespace JwtToken
             services.AddControllers();
             services.AddSingleton<TokenHelper>();
 
-            //if has more issuers??
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
                     .AddJwtBearer(options => {
                         options.RequireHttpsMetadata = false; //This should be disabled only in development environments.
                         options.SaveToken = true;
                         options.TokenValidationParameters = new TokenValidationParameters
                         {
-                            //NameClaimType = "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/nameidentifier",
                             ValidateIssuer = true,
-                            ValidateAudience = false, //??
+                            ValidateAudience = false,
                             ValidateLifetime = true, //expried
-                            ValidateIssuerSigningKey = true, //signature?
+                            ValidateIssuerSigningKey = true,
                             ValidIssuer = Configuration["JWTSettings:Issuer"],
                             ValidAudience = Configuration["JWTSettings:Audience"],
                             IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWTSettings:SecretKey"]))
